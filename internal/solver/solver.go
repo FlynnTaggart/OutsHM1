@@ -1,5 +1,41 @@
 package solver
 
-func Solve(a, b, c float64) []float64 {
-	return []float64{}
+import (
+	"errors"
+	"math"
+)
+
+const comparingEps = 0.0000001
+
+var errZeroCoefficient = errors.New("zero a coefficient")
+
+type Solver struct {
+	eps float64
+}
+
+func NewSolver() *Solver {
+	return &Solver{eps: comparingEps}
+}
+
+func (s *Solver) Solve(a, b, c float64) ([]float64, error) {
+	// -epsilon > a < epsilon
+	if a > -s.eps && a < s.eps {
+		return []float64{}, errZeroCoefficient
+	}
+
+	D := b*b - 4*a*c
+
+	if D < 0 {
+		return []float64{}, nil
+	}
+
+	// 0 > D < epsilon
+	if D < s.eps {
+		return []float64{-b / 2 * a}, nil
+	}
+
+	return []float64{
+		(-b + math.Sqrt(D)) / 2 * a,
+		(-b - math.Sqrt(D)) / 2 * a,
+	}, nil
 }
