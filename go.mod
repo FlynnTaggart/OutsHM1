@@ -1,1 +1,1 @@
-module HM1
+module github.com/FlynnTaggart/OutsHM1
