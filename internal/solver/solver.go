@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-const comparingEps = 0.0000001
+const defaultEps = 0.0000001
 
 var errZeroCoefficient = errors.New("zero a coefficient")
 
@@ -13,8 +13,12 @@ type Solver struct {
 	eps float64
 }
 
-func NewSolver() *Solver {
-	return &Solver{eps: comparingEps}
+func NewSolver(eps float64) *Solver {
+	if eps <= 0 {
+		return &Solver{eps: defaultEps}
+	}
+
+	return &Solver{eps: eps}
 }
 
 func (s *Solver) Solve(a, b, c float64) ([]float64, error) {
